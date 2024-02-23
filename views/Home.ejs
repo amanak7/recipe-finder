@@ -1,0 +1,68 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Recipe Finder</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pangolin&family=Roboto+Condensed&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="stylesheet" type="text/css" href="style/home.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Yummy</h1>
+
+            <nav>
+                <ul class="homepage">
+
+                    <li><form method="post" action="/Home"><button type="submit"><i class="material-symbols-outlined">Home</i>Home</button></form></li>
+                    <li><form method="post" action="/recipes"><button type="submit"><i class="material-symbols-outlined">Restaurant_menu</i>Recipes</button></form></li>
+                    <li><form method="post" action="/About"><button type="submit"><i class="material-symbols-outlined">description</i>About Us</button></form></li>
+                    <li><form method="post" action="/Contact"><button type="submit"><i class="material-symbols-outlined">call</i>Contact Us</button></form></li>
+                </ul>
+                <div class="userid">
+                <% if(locals.fname){ %>
+               <div id="name">
+                <%= fname%>
+               </div>
+               <% } %>
+               <form method="post" action="/logout">
+                <button class="logout-btn" type="submit"><span class="material-symbols-outlined">
+                    move_item
+                    </span></button>
+               </form>
+            </div>
+            </nav>
+        </header>
+        <section>
+            <img class="salad"  />
+            <div class="section">
+                <h2>Search Recipes </h2>
+                <p>Their are hundreds of different recipes.<br />If you want any recipes then only one click away.</p>
+                <form method="post" action="/recipes"><button type="submit"><i class="material-symbols-outlined">Restaurant_menu</i>View Recipes</button></form>
+
+            </div>
+
+            <div class="img">
+                <img class="foodi i1"  />
+                <img class="foodi i2"  />
+                <img class="foodi i3"  />
+                <img class="foodi i4"  />
+                <img class="foodi i5" />
+            </div>
+        </section>
+    </div>
+    <% if (locals.alertMessage) { %>
+        <script>
+          alert('<%= alertMessage %>');
+        </script>
+      <% } %>
+</body>
+</html>

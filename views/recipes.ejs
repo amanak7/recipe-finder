@@ -1,0 +1,196 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find Meal For Your Ingredients</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
+        integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA=="
+        crossorigin="anonymous" />
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pangolin&family=Roboto+Condensed&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Pangolin&family=Playfair:ital,wght@0,500;1,500&family=Roboto+Condensed&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="stylesheet" href="style/recipes.css" type="text/css" />
+</head>
+
+<body>
+    <div class=".cont">
+        <header>
+            <h1> Yummy</h1>
+
+            <nav>
+                <ul class="homepage">
+
+                    <li>
+                        <form method="post" action="/Home"><button type="submit"><i
+                                    class="material-symbols-outlined">Home</i>Home</button></form>
+                    </li>
+                    <li>
+                        <form method="post" action="/recipes"><button type="submit"><i
+                                    class="material-symbols-outlined">Restaurant_menu</i>Recipes</button></form>
+                    </li>
+                    <li>
+                        <form method="post" action="/About"><button type="submit"><i
+                                    class="material-symbols-outlined">description</i>About Us</button></form>
+                    </li>
+                    <li>
+                        <form method="post" action="/Contact"><button type="submit"><i
+                                    class="material-symbols-outlined">call</i>Contact Us</button></form>
+                    </li>
+                </ul>
+                <div class="userid">
+                    <% if(locals.fname){ %>
+                   <div id="name">
+                    <%= fname%>
+                   </div>
+                   <% } %>
+                   <form method="post" action="/logout">
+                    <button class="logout-btn" type="submit"><span class="material-symbols-outlined">
+                        move_item
+                        </span></button>
+                   </form>
+                </div>
+            </nav>
+        </header>
+        <div class="container">
+            <div class="meal-wrapper">
+                <div class="meal-search">
+                    <h2 class="title"> Find Dhakad Meals For Your Ingredients</h2>
+                    <p>
+                        A recipe has no soul. You, as the cook,must bring soul to the recipe.<br>
+                        <i> - Thomas Keller</i>
+                    </p>
+
+                    <div class="meal-search-box">
+                        <input type="text" class="search-control" placeholder="Enter an ingredient...."
+                            id="search-input">
+                        <button type="submit" class="search-btn btn" id="search-btn">
+                            <i class="fas fa-search"> </i>
+                        </button>
+                    </div>
+                </div>
+
+
+
+                <div class="meal-result">
+                    <h2 class="title"> Munna Kuch Kha Lo:</h2>
+                    <div id="meal">
+                    </div>
+                </div>
+
+
+                <div class="meal-details">
+
+                    <button type="button" class="btn recipe-close-btn" id="recipe-close-btn">
+                        <i class="fas fa-times"> </i>
+                    </button>
+
+                    <div class="meal-details-content">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <script>
+
+            const searchBtn = document.getElementById('search-btn');
+            const mealList = document.getElementById('meal');
+            const mealDetailsContent = document.querySelector('.meal-details-content');
+            const recipeCloseBtn = document.getElementById('recipe-close-btn');
+
+
+            searchBtn.addEventListener('click', getMealList);
+            mealList.addEventListener('click', getMealRecipe);
+            recipeCloseBtn.addEventListener('click', () => {
+                mealDetailsContent.parentElement.classList.remove('showRecipe');
+            });
+
+
+            function getMealList() {
+                let searchInputTxt = document.getElementById('search-input').value.trim();
+                fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?i=${searchInputTxt}`).then(response => response.json()).then(data => {
+                    let html = "";
+                    if (data.meals) {
+                        data.meals.forEach(meal => {
+                            html += `
+                                            <div class = "meal-item" data-id = "${meal.idMeal}">
+                                                <div class = "meal-img">
+                                                    <img src = "${meal.strMealThumb}" alt = "food">
+                                                </div>
+                                                <div class = "meal-name">
+                                                    <h3>${meal.strMeal}</h3>
+                                                    <a href = "#" class = "recipe-btn">Get Recipe</a>
+                                                </div>
+                                            </div>
+                                        `;
+                        });
+                        mealList.classList.remove('notFound');
+                    } else {
+                        html = "Sorry, we didn't find any meal!";
+                        mealList.classList.add('notFound');
+                    }
+
+                    mealList.innerHTML = html;
+                });
+            }
+
+
+
+            function getMealRecipe(e) {
+                e.preventDefault();
+                if (e.target.classList.contains('recipe-btn')) {
+                    let mealItem = e.target.parentElement.parentElement;
+                    fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${mealItem.dataset.id}`).then(response => response.json()).then(data => mealRecipeModal(data.meals));
+                }
+
+            }
+
+
+            function mealRecipeModal(meal) {
+                console.log(meal);
+                meal = meal[0];
+                let html = ` <h2 class = "recipe-title">${meal.strMeal}  </h2 >
+
+                                <p class = "recipe-category" > ${meal.strCategory} </p >
+
+                                <div class = "recipe-instruct" >
+                                <h3 > Instructions:</h3 >
+                                <p > ${meal.strInstructions} </p >
+                                </div >
+
+                                <div class = "recipe-meal-img" >
+                                <img src = "${meal.strMealThumb}" alt = "" >
+                                </div >
+                                <div class = "recipe-link" >
+                                <a href = "${meal.strYoutube}" target = "_blank" > Watch Video</a >
+                                </div >
+                                `;
+                mealDetailsContent.innerHTML = html;
+                mealDetailsContent.parentElement.classList.add('showRecipe');
+            }
+        </script>
+</body>
+
+</html>
